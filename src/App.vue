@@ -1,11 +1,18 @@
 /* eslint-disable */
 <template>
   <h1>Страница с постами</h1>
-  <my-button
-      @click="showDialog"
-      style="margin-top: 15px"
-  >Создать пост
-  </my-button>
+  <div class="app_btns">
+    <my-button
+        @click="showDialog"
+
+    >Создать пост
+    </my-button>
+    <my-select
+        v-model="selectedSort"
+        :options="sortOptions"
+    />
+  </div>
+
   <my-dialog v-model:show="dialogVisible">
     <post-form @create="createPost"/>
   </my-dialog>
@@ -23,18 +30,25 @@
 <script>
 import postList from "@/сomponents/PostList";
 import postForm from "@/сomponents/PostForm";
+
 import axios from 'axios';
 
 export default { // в скрипте по дефолту экспортируется объект
   components: {
-    postList, postForm
+    postList, postForm,
   },
   data() {   //поле
     return {
       posts: [//модель
       ],
       dialogVisible: false,
-      isPostLoading: false
+      isPostLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'По названию'},
+        {value: 'body', name: 'По описанию'},
+        {value: 'id', name: 'По ID'}
+      ]
     }
   },
   methods: { //поле
@@ -54,7 +68,6 @@ export default { // в скрипте по дефолту экспортируе
         const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
         this.posts = response.data;
         this.isPostLoading = false
-        console.log(response)
       } catch (e) {
         alert("Error")
       }
@@ -62,6 +75,11 @@ export default { // в скрипте по дефолту экспортируе
   },
   mounted() {
     this.fetchPosts();
+  },
+  watch: {
+    selectedSort(newValue) {
+      console.log(newValue)
+    },
   }
 }
 </script>
@@ -73,5 +91,14 @@ export default { // в скрипте по дефолту экспортируе
   box-sizing: border-box;
 }
 
+.app {
+  padding: 20px;
+}
+
+.app_btns {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>

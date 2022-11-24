@@ -40,6 +40,13 @@ export default {
         title: ""
       }
     },
+  },
+  watch: {
+    post: {
+      handler(){
+
+      }
+    }
   }
 }
 
