@@ -28,17 +28,17 @@
         v-if="!isPostLoading"
     />
     <div v-else>Идёт загрузка...</div>
-    <div class="page__wrapper">
-      <div v-for="pageNumber in totalPages"
-           :key="pageNumber"
-           class="page"
-           :class="{
-        'current-page': page === pageNumber
+<!--    <div class="page__wrapper">-->
+<!--      <div v-for="pageNumber in totalPages"-->
+<!--           :key="pageNumber"-->
+<!--           class="page"-->
+<!--           :class="{-->
+<!--        'current-page': page === pageNumber-->
 
-      }"
-           @click="changePage(pageNumber    )"
-      >{{pageNumber}}</div>
-    </div>
+<!--      }"-->
+<!--           @click="changePage(pageNumber    )"-->
+<!--      >{{pageNumber}}</div>-->
+<!--    </div>-->
   </div>
 
 </template>
@@ -82,10 +82,10 @@ export default { // в скрипте по дефолту экспортируе
     showDialog() {
       this.dialogVisible = true;
     },
-    changePage(pageNumber){
-      this.page=pageNumber
-      this.fetchPosts()
-    },
+    // changePage(pageNumber){
+    //   this.page=pageNumber
+    //   this.fetchPosts()
+    // },
     async fetchPosts() {
       try {
         this.isPostLoading = true
@@ -97,6 +97,23 @@ export default { // в скрипте по дефолту экспортируе
         } );
         this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
         this.posts = response.data;
+        this.isPostLoading = false
+      } catch (e) {
+        alert("Error")
+      }
+    },
+    async loadMorePosts() {
+      try {
+        this.isPostLoading = true
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?', {
+          params:{
+            _page: this.page,
+            _limit: this.limit
+          }
+        } );
+        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
+        this.posts = [ ...this.posts, ...response.data];
+
         this.isPostLoading = false
       } catch (e) {
         alert("Error")
@@ -116,7 +133,11 @@ export default { // в скрипте по дефолту экспортируе
       return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
   },
-  watch: {}
+  watch: {
+    page() {
+      this.fetchPosts()
+    }
+  }
 }
 </script>
 
