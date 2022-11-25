@@ -1,6 +1,11 @@
 /* eslint-disable */
 <template>
   <h1>Страница с постами</h1>
+  <my-input
+      placeholder="Поиск..."
+      v-model="searchQuery"
+  >
+  </my-input>
   <div class="app_btns">
     <my-button
         @click="showDialog"
@@ -18,11 +23,22 @@
   </my-dialog>
   <div class="app">
     <post-list
-        :posts="posts"
+        :posts="sortedAndSearchPosts"
         @remove="removePost"
         v-if="!isPostLoading"
     />
     <div v-else>Идёт загрузка...</div>
+    <div class="page__wrapper">
+      <div v-for="pageNumber in totalPages"
+           :key="pageNumber"
+           class="page"
+           :class="{
+        'current-page': page === pageNumber
+
+      }"
+           @click="changePage(pageNumber    )"
+      >{{pageNumber}}</div>
+    </div>
   </div>
 
 </template>
@@ -35,7 +51,7 @@ import axios from 'axios';
 
 export default { // в скрипте по дефолту экспортируется объект
   components: {
-    postList, postForm,
+    postList, postForm
   },
   data() {   //поле
     return {
@@ -44,6 +60,10 @@ export default { // в скрипте по дефолту экспортируе
       dialogVisible: false,
       isPostLoading: false,
       selectedSort: '',
+      searchQuery: '',
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       sortOptions: [
         {value: 'title', name: 'По названию'},
         {value: 'body', name: 'По описанию'},
@@ -62,10 +82,20 @@ export default { // в скрипте по дефолту экспортируе
     showDialog() {
       this.dialogVisible = true;
     },
+    changePage(pageNumber){
+      this.page=pageNumber
+      this.fetchPosts()
+    },
     async fetchPosts() {
       try {
         this.isPostLoading = true
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?', {
+          params:{
+            _page: this.page,
+            _limit: this.limit
+          }
+        } );
+        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
         this.posts = response.data;
         this.isPostLoading = false
       } catch (e) {
@@ -76,11 +106,17 @@ export default { // в скрипте по дефолту экспортируе
   mounted() {
     this.fetchPosts();
   },
-  watch: {
-    selectedSort(newValue) {
-      console.log(newValue)
+  computed: {
+    //я не понимаю что происходит тут. хелп !
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+      )
     },
-  }
+    sortedAndSearchPosts() {
+      return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
+    }
+  },
+  watch: {}
 }
 </script>
 
@@ -99,6 +135,21 @@ export default { // в скрипте по дефолту экспортируе
   margin-top: 15px;
   display: flex;
   justify-content: space-between;
+}
+
+.page__wrapper{
+  display: flex;
+  margin-top: 15px ;
+}
+
+.page{
+  border: 1px solid black;
+  padding: 15px;
+}
+
+.current-page{
+  border: 2px solid black;
+
 }
 
 </style>

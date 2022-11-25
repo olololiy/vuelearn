@@ -41,13 +41,6 @@ export default {
       }
     },
   },
-  watch: {
-    post: {
-      handler(){
-
-      }
-    }
-  }
 }
 
 </script>
