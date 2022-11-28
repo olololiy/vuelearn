@@ -1,8 +1,8 @@
-import MainPage from "@/сomponents/pages/MainPage";
+import MainPage from "@/pages/MainPage";
 import {createRouter, createWebHistory} from "vue-router"
-import PostPage from "@/сomponents/pages/PostPage";
-import AboutPage from "@/сomponents/pages/AboutPage";
-import PostIdPage from "@/сomponents/pages/PostIdPage";
+import PostPage from "@/pages/PostPage";
+import AboutPage from "@/pages/AboutPage";
+import PostIdPage from "@/pages/PostIdPage";
 
 const routes = [
     {

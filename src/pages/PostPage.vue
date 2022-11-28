@@ -2,6 +2,7 @@
 <template>
   <h1>Страница с постами</h1>
   <my-input
+      v-focus
       placeholder="Поиск..."
       v-model="searchQuery"
   >
@@ -28,7 +29,7 @@
         v-if="!isPostLoading"
     />
     <div v-else>Идёт загрузка...</div>
-    <div ref="observer" class="observer"></div>
+    <div v-intersection="loadMorePosts" class="observer"></div>
     <!--    <div class="page__wrapper">-->
     <!--      <div v-for="pageNumber in totalPages"-->
     <!--           :key="pageNumber"-->
@@ -51,10 +52,11 @@ import MyButton from "@/сomponents/UI/MyButton";
 import axios from 'axios';
 import MySelect from "@/сomponents/UI/MySelect";
 import MyInput from "@/сomponents/UI/MyInput";
+import VIntersection from "@/directives/VIntersection";
 
 export default { // в скрипте по дефолту экспортируется объект
   components: {
-    PostList, PostForm, MyButton, MySelect, MyInput
+    PostList, PostForm, MyButton, MySelect, MyInput, VIntersection
   },
   data() {   //поле
     return {
@@ -125,25 +127,21 @@ export default { // в скрипте по дефолту экспортируе
   },
   mounted() {
     this.fetchPosts();
-    console.log(this.$refs.observer);
-    const options = {
-      // root: document.querySelector('#scrollArea'),
-      rootMargin: '0px',
-      threshold: 1.0
-    }
-    //я не понял, почему при теряется контекст, при использовании function declaration
-    const callback = (entries, observer) => {
-      if(entries[0].isIntersecting && this.page < this.totalPages) {
-        this.loadMorePosts()
-        console.log(entries)
-      }
-
-
-
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer)
-
+    // console.log(this.$refs.observer);
+    // const options = {
+    //   // root: document.querySelector('#scrollArea'),
+    //   rootMargin: '0px',
+    //   threshold: 1.0
+    // }
+    // //я не понял, почему при теряется контекст, при использовании function declaration
+    // const callback = (entries, observer) => {
+    //   if(entries[0].isIntersecting && this.page < this.totalPages) {
+    //     this.loadMorePosts()
+    //     console.log(entries)
+    //   }
+    // };
+    // const observer = new IntersectionObserver(callback, options);
+    // observer.observe(this.$refs.observer)
   },
   computed: {
     //я не понимаю что происходит тут. хелп !
