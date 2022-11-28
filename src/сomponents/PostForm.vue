@@ -28,6 +28,8 @@ export default {
       post: {//модел. v-model="post.title"
         title: '',
         body: '',
+        id: undefined
+
       },
     }
   },
@@ -37,7 +39,8 @@ export default {
       this.$emit('create', this.post)
       this.post = {
         body: "",
-        title: ""
+        title: "",
+        id: ""
       }
     },
   },
