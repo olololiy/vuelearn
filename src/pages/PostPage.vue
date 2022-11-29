@@ -28,7 +28,7 @@
         @remove="removePost"
         v-if="!isPostLoading"
     />
-    <div v-else>Идёт загрузка...</div>
+    <div v-else>Идёт загрузка....</div>
     <div v-intersection="loadMorePosts" class="observer"></div>
     <!--    <div class="page__wrapper">-->
     <!--      <div v-for="pageNumber in totalPages"-->
