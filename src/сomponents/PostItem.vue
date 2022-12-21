@@ -3,20 +3,23 @@
     <div>
       <div><strong>Название</strong> {{ post.title }}</div>
       <div><strong>Описание</strong> {{ post.body }}</div>
-      <div><strong>id=</strong> {{ post.id }}</div>
-
+<!--      <div><strong>id=</strong> {{ post.id }}</div>-->
     </div>
-    <div>
-      <my-button
-          class="post_btn"
-          @click="$emit('remove', post)"
-      >удалить</my-button>
-    </div>
-    <div>
-      <my-button
-          class="post_btn"
-          @click="$router.push(`/posts/${post.id}`)"
-      >открыть</my-button>
+    <div class="post__buttons">
+      <div>
+        <my-button
+            class="post_btn"
+            @click="$emit('remove', post)"
+        >удалить
+        </my-button>
+      </div>
+      <div>
+        <my-button
+            class="post_btn"
+            @click="$router.push(`/posts/${post.id}`)"
+        >открыть
+        </my-button>
+      </div>
     </div>
   </div>
 
@@ -44,7 +47,9 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
-
+.post__buttons{
+  text-align: right;
+}
 .post_btn{
   margin: 5px;
 }

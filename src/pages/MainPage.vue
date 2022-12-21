@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <h1>Welcome</h1>
-
+    <p>Этот мини-петпроект сделан, чтобы набить руку</p>
+    <p>Здесь реализованны: удаление, добавление, сохранение в кеше и динамическая загрузка постов при скролле, сортировка, роутинг</p>
   </div>
 </template>
 
@@ -12,8 +13,8 @@ export default {
 </script>
 
 <style scoped>
-.main{
-  /*display: flex;*/
-  /*flex-direction: column;*/
+.main p{
+  padding: 5px;
+  font-size: 20px;
 }
 </style>

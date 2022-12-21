@@ -15,7 +15,7 @@ export default {
   name: "my-select",
   props: {
     modelValue: {
-      type: String,
+      type: String
     },
     options: {
       type: Array,

@@ -72,7 +72,7 @@ export default { // в скрипте по дефолту экспортируе
       sortOptions: [
         {value: 'title', name: 'По названию'},
         {value: 'body', name: 'По описанию'},
-        {value: 'id', name: 'По ID'}
+        // {value: id, name: 'По ID'}
       ]
     }
   },
